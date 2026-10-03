@@ -1,0 +1,76 @@
+{
+  "fixture_id": "arxiv_rag_papers",
+  "title": "Recent arXiv Papers on Retrieval-Augmented Generation",
+  "entity_type": "research_paper",
+  "spec": {
+    "title": "Recent arXiv Papers on Retrieval-Augmented Generation",
+    "intent_summary": "Collect recent research papers on Retrieval-Augmented Generation (RAG) from arXiv with abstracts and author information.",
+    "entity_type": "research_paper",
+    "fields": [
+      {"name": "title", "label": "Paper Title", "type": "string", "description": "Full paper title", "required": true, "unique_key": true, "validators": ["min_len:5"]},
+      {"name": "authors", "label": "Authors", "type": "string", "description": "Comma-separated authors", "required": true, "unique_key": false, "validators": []},
+      {"name": "abstract", "label": "Abstract", "type": "string", "description": "Summary of contribution", "required": false, "unique_key": false, "validators": []},
+      {"name": "arxiv_url", "label": "arXiv URL", "type": "url", "description": "Link to arXiv page", "required": true, "unique_key": false, "validators": ["url"]},
+      {"name": "published_date", "label": "Published Date", "type": "date", "description": "Submission date", "required": false, "unique_key": false, "validators": []}
+    ],
+    "source_strategy": {
+      "connectors": ["arxiv", "web_search"],
+      "seed_queries": ["retrieval augmented generation survey", "modular RAG LLM architecture"],
+      "seed_urls": [],
+      "domain_allowlist": ["arxiv.org"],
+      "domain_blocklist": [],
+      "rationale": "Direct preprint repository querying via arXiv API."
+    },
+    "dag": [
+      {"id": "n1", "type": "discover_sources", "depends_on": [], "params": {}, "label": "Search arXiv"},
+      {"id": "n2", "type": "fetch", "depends_on": ["n1"], "params": {}, "label": "Fetch Papers"},
+      {"id": "n3", "type": "extract", "depends_on": ["n2"], "params": {}, "label": "Extract Metadata"},
+      {"id": "n4", "type": "normalize", "depends_on": ["n3"], "params": {}, "label": "Normalize Dates"},
+      {"id": "n5", "type": "validate", "depends_on": ["n4"], "params": {}, "label": "Validate"},
+      {"id": "n6", "type": "dedupe", "depends_on": ["n5"], "params": {}, "label": "Deduplicate"},
+      {"id": "n7", "type": "score", "depends_on": ["n6"], "params": {}, "label": "Score"},
+      {"id": "n8", "type": "finalize", "depends_on": ["n7"], "params": {}, "label": "Finalize"}
+    ],
+    "limits": {"max_pages": 20, "max_records": 30, "per_domain_rps": 2.0}
+  },
+  "source_docs": [
+    {
+      "url": "https://arxiv.org/abs/2312.10997",
+      "title": "Retrieval-Augmented Generation for AI: A Survey",
+      "text": "Retrieval-Augmented Generation for Large Language Models: A Survey. Authors: Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan. Abstract: Retrieval-Augmented Generation merges retrieval with generative models to overcome hallucinations. arXiv URL: https://arxiv.org/abs/2312.10997. Published Date: 2024-01-15.\n\nModular RAG: Advanced Paradigms and Architectural Evolution. Authors: Terry Yue Zhuo, Yiran Wang, Patrick Lewis. Abstract: Formalizing the evolution of RAG pipelines into modular architectures. arXiv URL: https://arxiv.org/abs/2402.05131. Published Date: 2024-02-08.",
+      "content_hash": "d4e5f6a1b2c3"
+    }
+  ],
+  "records": [
+    {
+      "data": {
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "authors": "Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan",
+        "abstract": "Retrieval-Augmented Generation merges retrieval with generative models to overcome hallucinations",
+        "arxiv_url": "https://arxiv.org/abs/2312.10997",
+        "published_date": "2024-01-15"
+      },
+      "source_url": "https://arxiv.org/abs/2312.10997",
+      "source_snippet": "Retrieval-Augmented Generation for Large Language Models: A Survey. Authors: Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan. Abstract: Retrieval-Augmented Generation merges retrieval with generative models to overcome hallucinations. arXiv URL: https://arxiv.org/abs/2312.10997. Published Date: 2024-01-15.",
+      "confidence": 0.98,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://arxiv.org/abs/2312.10997", "connector": "arxiv"}]
+    },
+    {
+      "data": {
+        "title": "Modular RAG: Advanced Paradigms and Architectural Evolution",
+        "authors": "Terry Yue Zhuo, Yiran Wang, Patrick Lewis",
+        "abstract": "Formalizing the evolution of RAG pipelines into modular architectures",
+        "arxiv_url": "https://arxiv.org/abs/2402.05131",
+        "published_date": "2024-02-08"
+      },
+      "source_url": "https://arxiv.org/abs/2312.10997",
+      "source_snippet": "Modular RAG: Advanced Paradigms and Architectural Evolution. Authors: Terry Yue Zhuo, Yiran Wang, Patrick Lewis. Abstract: Formalizing the evolution of RAG pipelines into modular architectures. arXiv URL: https://arxiv.org/abs/2402.05131. Published Date: 2024-02-08.",
+      "confidence": 0.96,
+      "verification_status": "verified",
+      "corroboration_count": 1,
+      "sources": [{"url": "https://arxiv.org/abs/2312.10997", "connector": "arxiv"}]
+    }
+  ]
+}

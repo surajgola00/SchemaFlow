@@ -1,0 +1,70 @@
+{
+  "fixture_id": "ai_startups_india",
+  "title": "Seed-Stage AI Startups in India",
+  "entity_type": "startup",
+  "spec": {
+    "title": "Seed-Stage AI Startups in India",
+    "intent_summary": "Collect profiles of early-stage AI startups founded in India, their funding, founders, and careers.",
+    "entity_type": "startup",
+    "fields": [
+      {"name": "name", "label": "Company Name", "type": "string", "description": "Startup name", "required": true, "unique_key": true},
+      {"name": "founders", "label": "Founders", "type": "string", "description": "Names of founders", "required": true, "unique_key": false},
+      {"name": "funding_amount", "label": "Funding Amount", "type": "currency", "description": "Funding raised", "required": false, "unique_key": false},
+      {"name": "location", "label": "Location", "type": "string", "description": "City headquarters", "required": false, "unique_key": false},
+      {"name": "career_page_url", "label": "Careers URL", "type": "url", "description": "Careers page link", "required": false, "unique_key": false},
+      {"name": "description", "label": "Description", "type": "string", "description": "Product summary", "required": false, "unique_key": false}
+    ],
+    "source_strategy": {
+      "connectors": ["web_search", "rss", "hackernews"],
+      "seed_queries": ["seed stage AI startups India 2024", "YourStory Indian AI startup funding"],
+      "seed_urls": [],
+      "domain_allowlist": [],
+      "domain_blocklist": ["linkedin.com"],
+      "rationale": "High quality coverage of Indian tech startup announcements"
+    },
+    "dag": [],
+    "limits": {"max_pages": 30, "max_records": 50, "per_domain_rps": 1.0}
+  },
+  "source_docs": [
+    {
+      "url": "https://yourstory.com/2024/01/indian-ai-startups-funding",
+      "title": "Top Indian AI Startups Making Waves in 2024",
+      "text": "Sarvam AI was founded by Vivek Raghavan and Pratyush Kumar in Bengaluru. The company raised $41M in Series A funding. Krutrim founded by Bhavish Aggarwal secured $50M seed funding to build native AI foundation models.",
+      "content_hash": "a1b2c3d4e5f6"
+    }
+  ],
+  "records": [
+    {
+      "data": {
+        "name": "Sarvam AI",
+        "founders": "Vivek Raghavan, Pratyush Kumar",
+        "funding_amount": "$41.0M USD",
+        "location": "Bengaluru, India",
+        "career_page_url": "https://sarvam.ai/careers",
+        "description": "Building multilingual LLMs for Indian languages"
+      },
+      "source_url": "https://yourstory.com/2024/01/indian-ai-startups-funding",
+      "source_snippet": "Sarvam AI was founded by Vivek Raghavan and Pratyush Kumar in Bengaluru. The company raised $41M in Series A funding.",
+      "confidence": 0.96,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://yourstory.com/2024/01/indian-ai-startups-funding", "connector": "web_search"}]
+    },
+    {
+      "data": {
+        "name": "Krutrim",
+        "founders": "Bhavish Aggarwal",
+        "funding_amount": "$50.0M USD",
+        "location": "Bengaluru, India",
+        "career_page_url": "https://krutrim.com/careers",
+        "description": "India-first AI company building foundation models"
+      },
+      "source_url": "https://yourstory.com/2024/01/indian-ai-startups-funding",
+      "source_snippet": "Krutrim founded by Bhavish Aggarwal secured $50M seed funding to build native AI foundation models.",
+      "confidence": 0.94,
+      "verification_status": "verified",
+      "corroboration_count": 1,
+      "sources": [{"url": "https://yourstory.com/2024/01/indian-ai-startups-funding", "connector": "web_search"}]
+    }
+  ]
+}

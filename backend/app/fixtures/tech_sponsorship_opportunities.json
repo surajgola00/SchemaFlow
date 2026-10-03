@@ -1,0 +1,79 @@
+{
+  "fixture_id": "tech_sponsorship_opportunities",
+  "title": "Tech Newsletter Sponsorship Opportunities",
+  "entity_type": "sponsorship_opportunity",
+  "spec": {
+    "title": "Tech Newsletter Sponsorship Opportunities",
+    "intent_summary": "Collect information about tech newsletters that accept paid sponsorships, including audience size and pricing.",
+    "entity_type": "sponsorship_opportunity",
+    "fields": [
+      {"name": "newsletter_name", "label": "Newsletter Name", "type": "string", "description": "Name of the newsletter", "required": true, "unique_key": true, "validators": ["min_len:2"]},
+      {"name": "audience_size", "label": "Audience Size", "type": "string", "description": "Number of subscribers", "required": false, "unique_key": false, "validators": []},
+      {"name": "niche", "label": "Niche/Topic", "type": "string", "description": "Primary topic area", "required": false, "unique_key": false, "validators": []},
+      {"name": "pricing", "label": "Pricing", "type": "currency", "description": "Sponsorship rate per issue", "required": false, "unique_key": false, "validators": []},
+      {"name": "contact_email", "label": "Contact Email", "type": "email", "description": "Sponsorship contact email", "required": false, "unique_key": false, "validators": ["email"]},
+      {"name": "url", "label": "Newsletter URL", "type": "url", "description": "Homepage or sponsor page", "required": true, "unique_key": false, "validators": ["url"]}
+    ],
+    "source_strategy": {
+      "connectors": ["web_search", "rss"],
+      "seed_queries": ["tech newsletter sponsorship pricing", "developer publication media kit 2026"],
+      "seed_urls": [],
+      "domain_allowlist": [],
+      "domain_blocklist": [],
+      "rationale": "Surfacing verified tech newsletter media kits and sponsorship prospectuses."
+    },
+    "dag": [
+      {"id": "n1", "type": "discover_sources", "depends_on": [], "params": {}, "label": "Discover Sources"},
+      {"id": "n2", "type": "fetch", "depends_on": ["n1"], "params": {}, "label": "Fetch Pages"},
+      {"id": "n3", "type": "extract", "depends_on": ["n2"], "params": {}, "label": "Extract Data"},
+      {"id": "n4", "type": "normalize", "depends_on": ["n3"], "params": {}, "label": "Normalize"},
+      {"id": "n5", "type": "validate", "depends_on": ["n4"], "params": {}, "label": "Validate"},
+      {"id": "n6", "type": "dedupe", "depends_on": ["n5"], "params": {}, "label": "Deduplicate"},
+      {"id": "n7", "type": "score", "depends_on": ["n6"], "params": {}, "label": "Score"},
+      {"id": "n8", "type": "finalize", "depends_on": ["n7"], "params": {}, "label": "Finalize"}
+    ],
+    "limits": {"max_pages": 25, "max_records": 30, "per_domain_rps": 1.0}
+  },
+  "source_docs": [
+    {
+      "url": "https://sponsor.techpulse.dev/mediakit",
+      "title": "TechPulse Weekly Sponsorship Media Kit",
+      "text": "TechPulse Weekly is a curated developer publication. Newsletter Name: TechPulse Weekly. Audience Size: 65,000 subscribers. Niche: AI and Cloud Engineering. Sponsorship Pricing: $2,500 USD per issue. Contact Email: sponsor@techpulse.dev. Newsletter URL: https://techpulse.dev/sponsor.\n\nByteByteGo Newsletter provides deep dives into distributed system architecture. Newsletter Name: ByteByteGo. Audience Size: 500,000 subscribers. Niche: System Design and Software Architecture. Sponsorship Pricing: $8,000 USD per issue. Contact Email: partnerships@bytebytego.com. Newsletter URL: https://bytebytego.com/sponsor.",
+      "content_hash": "e5f6a1b2c3d4"
+    }
+  ],
+  "records": [
+    {
+      "data": {
+        "newsletter_name": "TechPulse Weekly",
+        "audience_size": "65,000 subscribers",
+        "niche": "AI and Cloud Engineering",
+        "pricing": "$2,500 USD",
+        "contact_email": "sponsor@techpulse.dev",
+        "url": "https://techpulse.dev/sponsor"
+      },
+      "source_url": "https://sponsor.techpulse.dev/mediakit",
+      "source_snippet": "TechPulse Weekly is a curated developer publication. Newsletter Name: TechPulse Weekly. Audience Size: 65,000 subscribers. Niche: AI and Cloud Engineering. Sponsorship Pricing: $2,500 USD per issue. Contact Email: sponsor@techpulse.dev. Newsletter URL: https://techpulse.dev/sponsor.",
+      "confidence": 0.98,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://sponsor.techpulse.dev/mediakit", "connector": "web_search"}]
+    },
+    {
+      "data": {
+        "newsletter_name": "ByteByteGo",
+        "audience_size": "500,000 subscribers",
+        "niche": "System Design and Software Architecture",
+        "pricing": "$8,000 USD",
+        "contact_email": "partnerships@bytebytego.com",
+        "url": "https://bytebytego.com/sponsor"
+      },
+      "source_url": "https://sponsor.techpulse.dev/mediakit",
+      "source_snippet": "ByteByteGo Newsletter provides deep dives into distributed system architecture. Newsletter Name: ByteByteGo. Audience Size: 500,000 subscribers. Niche: System Design and Software Architecture. Sponsorship Pricing: $8,000 USD per issue. Contact Email: partnerships@bytebytego.com. Newsletter URL: https://bytebytego.com/sponsor.",
+      "confidence": 0.97,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://sponsor.techpulse.dev/mediakit", "connector": "web_search"}]
+    }
+  ]
+}

@@ -13,7 +13,10 @@
     "react-dom": "^18.3.1",
     "@tanstack/react-table": "^8.17.3",
     "lucide-react": "^0.390.0",
-    "axios": "^1.7.2"
+    "axios": "^1.7.2",
+    "reactflow": "^11.11.3",
+    "recharts": "^2.12.7",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

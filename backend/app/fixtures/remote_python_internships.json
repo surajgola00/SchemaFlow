@@ -1,0 +1,86 @@
+{
+  "fixture_id": "remote_python_internships",
+  "title": "Remote Python Internship Opportunities",
+  "entity_type": "job_opening",
+  "spec": {
+    "title": "Remote Python Internship Opportunities",
+    "intent_summary": "Collect current remote internship postings for Python developers from permitted job boards and tech company sites.",
+    "entity_type": "job_opening",
+    "fields": [
+      {"name": "title", "label": "Job Title", "type": "string", "description": "Exact job title as posted", "required": true, "unique_key": true, "validators": ["min_len:3"]},
+      {"name": "company", "label": "Company", "type": "string", "description": "Name of the hiring company", "required": true, "unique_key": false, "validators": []},
+      {"name": "location", "label": "Location", "type": "string", "description": "Location or Remote", "required": false, "unique_key": false, "validators": []},
+      {"name": "requirements", "label": "Requirements", "type": "string", "description": "Key technical skills required", "required": false, "unique_key": false, "validators": []},
+      {"name": "stipend", "label": "Stipend", "type": "currency", "description": "Monthly stipend", "required": false, "unique_key": false, "validators": []},
+      {"name": "apply_url", "label": "Apply URL", "type": "url", "description": "Direct application link", "required": true, "unique_key": false, "validators": ["url"]},
+      {"name": "deadline", "label": "Deadline", "type": "date", "description": "Application deadline", "required": false, "unique_key": false, "validators": []}
+    ],
+    "source_strategy": {
+      "connectors": ["web_search", "rss", "hackernews"],
+      "seed_queries": [
+        "remote Python internship 2026 apply",
+        "Python developer intern remote stipend",
+        "software engineering internship Python remote"
+      ],
+      "seed_urls": [],
+      "domain_allowlist": [],
+      "domain_blocklist": ["linkedin.com", "indeed.com"],
+      "rationale": "Surfacing verified remote Python internship opportunities from engineering blogs and hiring forums."
+    },
+    "dag": [
+      {"id": "n1", "type": "discover_sources", "depends_on": [], "params": {}, "label": "Discover Sources"},
+      {"id": "n2", "type": "fetch", "depends_on": ["n1"], "params": {}, "label": "Fetch Pages"},
+      {"id": "n3", "type": "extract", "depends_on": ["n2"], "params": {}, "label": "Extract Listings"},
+      {"id": "n4", "type": "normalize", "depends_on": ["n3"], "params": {}, "label": "Normalize Fields"},
+      {"id": "n5", "type": "validate", "depends_on": ["n4"], "params": {}, "label": "Validate Data"},
+      {"id": "n6", "type": "dedupe", "depends_on": ["n5"], "params": {}, "label": "Deduplicate"},
+      {"id": "n7", "type": "score", "depends_on": ["n6"], "params": {}, "label": "Score Confidence"},
+      {"id": "n8", "type": "finalize", "depends_on": ["n7"], "params": {}, "label": "Finalize"}
+    ],
+    "limits": {"max_pages": 25, "max_records": 40, "per_domain_rps": 1.0}
+  },
+  "source_docs": [
+    {
+      "url": "https://news.ycombinator.com/item?id=39000000",
+      "title": "Ask HN: Who is hiring? Python Internships",
+      "text": "Datadog is hiring a Remote Python Backend Intern. Company: Datadog. Location: Remote Global. Requirements: Python, FastAPI, Docker, and SQL. Stipend: $4,500 USD per month. Apply at https://datadog.com/careers/intern-python-2026. Application Deadline: 2026-05-15.\n\nSupabase is looking for a Python SDK Intern (Remote). Company: Supabase. Location: Fully Remote. Requirements: Python 3.12, Asyncio, Pytest. Stipend: $3,500 USD per month. Apply directly at https://supabase.com/careers/python-intern. Deadline: 2026-04-30.",
+      "content_hash": "b2c3d4e5f6a1"
+    }
+  ],
+  "records": [
+    {
+      "data": {
+        "title": "Remote Python Backend Intern",
+        "company": "Datadog",
+        "location": "Remote Global",
+        "requirements": "Python, FastAPI, Docker, and SQL",
+        "stipend": "$4,500 USD",
+        "apply_url": "https://datadog.com/careers/intern-python-2026",
+        "deadline": "2026-05-15"
+      },
+      "source_url": "https://news.ycombinator.com/item?id=39000000",
+      "source_snippet": "Datadog is hiring a Remote Python Backend Intern. Company: Datadog. Location: Remote Global. Requirements: Python, FastAPI, Docker, and SQL. Stipend: $4,500 USD per month. Apply at https://datadog.com/careers/intern-python-2026. Application Deadline: 2026-05-15.",
+      "confidence": 0.96,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://news.ycombinator.com/item?id=39000000", "connector": "hackernews"}]
+    },
+    {
+      "data": {
+        "title": "Python SDK Intern (Remote)",
+        "company": "Supabase",
+        "location": "Fully Remote",
+        "requirements": "Python 3.12, Asyncio, Pytest",
+        "stipend": "$3,500 USD",
+        "apply_url": "https://supabase.com/careers/python-intern",
+        "deadline": "2026-04-30"
+      },
+      "source_url": "https://news.ycombinator.com/item?id=39000000",
+      "source_snippet": "Supabase is looking for a Python SDK Intern (Remote). Company: Supabase. Location: Fully Remote. Requirements: Python 3.12, Asyncio, Pytest. Stipend: $3,500 USD per month. Apply directly at https://supabase.com/careers/python-intern. Deadline: 2026-04-30.",
+      "confidence": 0.95,
+      "verification_status": "verified",
+      "corroboration_count": 1,
+      "sources": [{"url": "https://news.ycombinator.com/item?id=39000000", "connector": "hackernews"}]
+    }
+  ]
+}

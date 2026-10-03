@@ -1,0 +1,82 @@
+{
+  "fixture_id": "open_source_ml_repos",
+  "title": "Trending Open Source ML Repositories",
+  "entity_type": "github_repo",
+  "spec": {
+    "title": "Trending Open Source ML Repositories",
+    "intent_summary": "Collect popular open-source machine learning repositories from GitHub with metadata for analysis.",
+    "entity_type": "github_repo",
+    "fields": [
+      {"name": "repo_name", "label": "Repository Name", "type": "string", "description": "Full repo name (owner/repo)", "required": true, "unique_key": true, "validators": []},
+      {"name": "owner", "label": "Owner", "type": "string", "description": "GitHub username or organization", "required": true, "unique_key": false, "validators": []},
+      {"name": "stars", "label": "Stars", "type": "integer", "description": "Number of GitHub stars", "required": false, "unique_key": false, "validators": []},
+      {"name": "description", "label": "Description", "type": "string", "description": "Repository description from GitHub", "required": false, "unique_key": false, "validators": []},
+      {"name": "language", "label": "Primary Language", "type": "string", "description": "Main programming language", "required": false, "unique_key": false, "validators": []},
+      {"name": "license", "label": "License", "type": "string", "description": "Open-source license type", "required": false, "unique_key": false, "validators": []},
+      {"name": "url", "label": "Repository URL", "type": "url", "description": "Full GitHub URL", "required": true, "unique_key": false, "validators": ["url"]}
+    ],
+    "source_strategy": {
+      "connectors": ["github", "web_search"],
+      "seed_queries": ["machine learning framework python stars:>1000", "deep learning library open source"],
+      "seed_urls": [],
+      "domain_allowlist": ["github.com"],
+      "domain_blocklist": [],
+      "rationale": "Direct repository tracking from GitHub."
+    },
+    "dag": [
+      {"id": "n1", "type": "discover_sources", "depends_on": [], "params": {}, "label": "Discover Repos"},
+      {"id": "n2", "type": "fetch", "depends_on": ["n1"], "params": {}, "label": "Fetch Metadata"},
+      {"id": "n3", "type": "extract", "depends_on": ["n2"], "params": {}, "label": "Extract Repos"},
+      {"id": "n4", "type": "normalize", "depends_on": ["n3"], "params": {}, "label": "Normalize"},
+      {"id": "n5", "type": "validate", "depends_on": ["n4"], "params": {}, "label": "Validate"},
+      {"id": "n6", "type": "dedupe", "depends_on": ["n5"], "params": {}, "label": "Deduplicate"},
+      {"id": "n7", "type": "score", "depends_on": ["n6"], "params": {}, "label": "Score"},
+      {"id": "n8", "type": "finalize", "depends_on": ["n7"], "params": {}, "label": "Finalize"}
+    ],
+    "limits": {"max_pages": 20, "max_records": 50, "per_domain_rps": 0.5}
+  },
+  "source_docs": [
+    {
+      "url": "https://github.com/trending/python",
+      "title": "Trending Python Repositories on GitHub",
+      "text": "vllm-project/vllm is a high-throughput LLM serving engine. Owner: vllm-project. Stars: 28500. Primary Language: Python. License: Apache 2.0. URL: https://github.com/vllm-project/vllm.\n\nollama/ollama allows users to run large language models locally. Owner: ollama. Stars: 94000. Primary Language: Go. License: MIT. URL: https://github.com/ollama/ollama.",
+      "content_hash": "c3d4e5f6a1b2"
+    }
+  ],
+  "records": [
+    {
+      "data": {
+        "repo_name": "vllm-project/vllm",
+        "owner": "vllm-project",
+        "stars": 28500,
+        "description": "high-throughput LLM serving engine",
+        "language": "Python",
+        "license": "Apache 2.0",
+        "url": "https://github.com/vllm-project/vllm"
+      },
+      "source_url": "https://github.com/trending/python",
+      "source_snippet": "vllm-project/vllm is a high-throughput LLM serving engine. Owner: vllm-project. Stars: 28500. Primary Language: Python. License: Apache 2.0. URL: https://github.com/vllm-project/vllm.",
+      "confidence": 0.98,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://github.com/trending/python", "connector": "github"}]
+    },
+    {
+      "data": {
+        "repo_name": "ollama/ollama",
+        "owner": "ollama",
+        "stars": 94000,
+        "description": "allows users to run large language models locally",
+        "language": "Go",
+        "license": "MIT",
+        "url": "https://github.com/ollama/ollama"
+      },
+      "source_url": "https://github.com/trending/python",
+      "source_snippet": "ollama/ollama allows users to run large language models locally. Owner: ollama. Stars: 94000. Primary Language: Go. License: MIT. URL: https://github.com/ollama/ollama.",
+      "confidence": 0.97,
+      "verification_status": "verified",
+      "corroboration_count": 2,
+      "sources": [{"url": "https://github.com/trending/python", "connector": "github"}]
+    }
+  ]
+}
